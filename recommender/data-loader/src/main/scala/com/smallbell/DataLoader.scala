@@ -14,9 +14,9 @@ case class MongoConfig(uri: String, db: String)
 
 object DataLoader {
 
-  val PRODUCT_DATA_PATH = "E:\\java_idea\\ECommerceRecommendSystem" +
+  val PRODUCT_DATA_PATH = "E:\\java_idea\\ecommerce-recommend-system" +
     "\\recommender\\DataLoader\\src\\main\\resources\\products.csv"
-  val RATING_DATA_PATH = "E:\\java_idea\\ECommerceRecommendSystem" +
+  val RATING_DATA_PATH = "E:\\java_idea\\ecommerce-recommend-system" +
     "\\recommender\\DataLoader\\src\\main\\resources\\ratings.csv"
 
   val MONGODB_PRODUCT_COLLECTION = "Product"

@@ -36,28 +36,30 @@ public class ProductRestApi {
 
     /**
      * 获取热门推荐
+     *
      * @param model
      * @return
      */
-    @RequestMapping(value = "/hot", produces = "application/json", method = RequestMethod.GET )
+    @RequestMapping(value = "/hot", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
-    public Model getHotProducts(@RequestParam("num")int num, Model model) {
+    public Model getHotProducts(@RequestParam("num") int num, Model model) {
         List<Recommendation> recommendations = recommenderService.getHotRecommendations(new HotRecommendationRequest(num));
-        model.addAttribute("success",true);
+        model.addAttribute("success", true);
         model.addAttribute("products", productService.getRecommendProducts(recommendations));
         return model;
     }
 
     /**
      * 获取打分最多的商品
+     *
      * @param model
      * @return
      */
-    @RequestMapping(value = "/rate", produces = "application/json", method = RequestMethod.GET )
+    @RequestMapping(value = "/rate", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
-    public Model getRateMoreProducts(@RequestParam("num")int num, Model model) {
+    public Model getRateMoreProducts(@RequestParam("num") int num, Model model) {
         List<Recommendation> recommendations = recommenderService.getRateMoreRecommendations(new RateMoreRecommendationRequest(num));
-        model.addAttribute("success",true);
+        model.addAttribute("success", true);
         model.addAttribute("products", productService.getRecommendProducts(recommendations));
         return model;
     }
@@ -65,7 +67,7 @@ public class ProductRestApi {
     // 基于物品的协同过滤
     @RequestMapping(value = "/itemcf/{id}", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
-    public Model getItemCFProducts(@PathVariable("id")int id, Model model) {
+    public Model getItemCFProducts(@PathVariable("id") int id, Model model) {
         List<Recommendation> recommendations = recommenderService.getItemCFRecommendations(new ItemCFRecommendationRequest(id));
         model.addAttribute("success", true);
         model.addAttribute("products", productService.getRecommendProducts(recommendations));
@@ -75,7 +77,7 @@ public class ProductRestApi {
     // 基于内容的推荐
     @RequestMapping(value = "/contentbased/{id}", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
-    public Model getContentBasedProducts(@PathVariable("id")int id, Model model) {
+    public Model getContentBasedProducts(@PathVariable("id") int id, Model model) {
         List<Recommendation> recommendations = recommenderService.getContentBasedRecommendations(new ContentBasedRecommendationRequest(id));
         model.addAttribute("success", true);
         model.addAttribute("products", productService.getRecommendProducts(recommendations));
@@ -84,72 +86,74 @@ public class ProductRestApi {
 
     /**
      * 获取单个商品的信息
+     *
      * @param id
      * @param model
      * @return
      */
-    @RequestMapping(value = "/info/{id}", produces = "application/json", method = RequestMethod.GET )
+    @RequestMapping(value = "/info/{id}", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
-    public Model getProductInfo(@PathVariable("id")int id, Model model) {
-        model.addAttribute("success",true);
+    public Model getProductInfo(@PathVariable("id") int id, Model model) {
+        model.addAttribute("success", true);
         model.addAttribute("product", productService.findByProductId(id));
         return model;
     }
 
     /**
      * 模糊查询商品
+     *
      * @param query
      * @param model
      * @return
      */
-    @RequestMapping(value = "/search", produces = "application/json", method = RequestMethod.GET )
+    @RequestMapping(value = "/search", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
-    public Model getSearchProducts(@RequestParam("query")String query, Model model) {
+    public Model getSearchProducts(@RequestParam("query") String query, Model model) {
         try {
-            query = new String(query.getBytes("ISO-8859-1"),"UTF-8");
-        } catch(java.io.UnsupportedEncodingException e) {
+            query = new String(query.getBytes("ISO-8859-1"), "UTF-8");
+        } catch (java.io.UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         List<Product> products = productService.findByProductName(query);
-        model.addAttribute("success",true);
+        model.addAttribute("success", true);
         model.addAttribute("products", products);
         return model;
     }
 
-    @RequestMapping(value = "/rate/{id}", produces = "application/json", method = RequestMethod.GET )
+    @RequestMapping(value = "/rate/{id}", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
-    public Model rateToProduct(@PathVariable("id")int id, @RequestParam("score")Double score, @RequestParam("username")String username, Model model) {
+    public Model rateToProduct(@PathVariable("id") int id, @RequestParam("score") Double score, @RequestParam("username") String username, Model model) {
         User user = userService.findByUsername(username);
         ProductRatingRequest request = new ProductRatingRequest(user.getUserId(), id, score);
         boolean complete = ratingService.productRating(request);
         //埋点日志
-        if(complete) {
+        if (complete) {
             System.out.print("=========埋点=========");
-            logger.info(Constant.PRODUCT_RATING_PREFIX + ":" + user.getUserId() +"|"+ id +"|"+ request.getScore() +"|"+ System.currentTimeMillis()/1000);
+            logger.info(Constant.PRODUCT_RATING_PREFIX + ":" + user.getUserId() + "|" + id + "|" + request.getScore() + "|" + System.currentTimeMillis() / 1000);
         }
-        model.addAttribute("success",true);
-        model.addAttribute("message"," 已完成评分！");
+        model.addAttribute("success", true);
+        model.addAttribute("message", " 已完成评分！");
         return model;
     }
 
     // 离线推荐
-    @RequestMapping(value = "/offline", produces = "application/json", method = RequestMethod.GET )
+    @RequestMapping(value = "/offline", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
-    public Model getOfflineProducts(@RequestParam("username")String username,@RequestParam("num")int num, Model model) {
+    public Model getOfflineProducts(@RequestParam("username") String username, @RequestParam("num") int num, Model model) {
         User user = userService.findByUsername(username);
         List<Recommendation> recommendations = recommenderService.getCollaborativeFilteringRecommendations(new UserRecommendationRequest(user.getUserId(), num));
-        model.addAttribute("success",true);
+        model.addAttribute("success", true);
         model.addAttribute("products", productService.getRecommendProducts(recommendations));
         return model;
     }
 
     // 实时推荐
-    @RequestMapping(value = "/stream", produces = "application/json", method = RequestMethod.GET )
+    @RequestMapping(value = "/stream", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
-    public Model getStreamProducts(@RequestParam("username")String username,@RequestParam("num")int num, Model model) {
+    public Model getStreamProducts(@RequestParam("username") String username, @RequestParam("num") int num, Model model) {
         User user = userService.findByUsername(username);
         List<Recommendation> recommendations = recommenderService.getStreamRecommendations(new UserRecommendationRequest(user.getUserId(), num));
-        model.addAttribute("success",true);
+        model.addAttribute("success", true);
         model.addAttribute("products", productService.getRecommendProducts(recommendations));
         return model;
     }

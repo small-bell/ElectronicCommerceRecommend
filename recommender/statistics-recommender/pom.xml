@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>DataLoader</artifactId>
+    <artifactId>statistics-recommender</artifactId>
 
     <dependencies>
         <!-- Spark的依赖引入 -->
@@ -27,11 +27,13 @@
             <artifactId>scala-library</artifactId>
         </dependency>
         <!-- 加入MongoDB的驱动 -->
+        <!-- 用于代码方式连接MongoDB -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>casbah-core_2.11</artifactId>
             <version>${casbah.version}</version>
         </dependency>
+        <!-- 用于Spark和MongoDB的对接 -->
         <dependency>
             <groupId>org.mongodb.spark</groupId>
             <artifactId>mongo-spark-connector_2.11</artifactId>

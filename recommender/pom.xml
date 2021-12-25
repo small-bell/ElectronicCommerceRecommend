@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>ECommerceRecommendSystem</artifactId>
+        <artifactId>ecommerce-recommend-system</artifactId>
         <groupId>com.smallbell</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -12,11 +12,11 @@
     <artifactId>recommender</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>DataLoader</module>
-        <module>StatisticsRecommender</module>
-        <module>OfflineRecommender</module>
-        <module>StreamingRecommender</module>
-        <module>KafkaStreaming</module>
+        <module>data-loader</module>
+        <module>statistics-recommender</module>
+        <module>offline-recommender</module>
+        <module>streaming-recommender</module>
+        <module>kafka-streaming</module>
     </modules>
 
     <dependencyManagement>
@@ -56,13 +56,13 @@
     </dependencyManagement>
 
     <build>
-        <plugins>
-            <!-- 父项目已声明该plugin，子项目在引入的时候，不用声明版本和已经声明的配置 -->
-            <plugin>
-                <groupId>net.alchim31.maven</groupId>
-                <artifactId>scala-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
+<!--        <plugins>-->
+<!--            &lt;!&ndash; 父项目已声明该plugin，子项目在引入的时候，不用声明版本和已经声明的配置 &ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <groupId>net.alchim31.maven</groupId>-->
+<!--                <artifactId>scala-maven-plugin</artifactId>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
     </build>
 
 </project>
